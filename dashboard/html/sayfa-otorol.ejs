@@ -1,0 +1,97 @@
+<!--HEADER-->
+<%- include('başlık.ejs', {bot, user, path}) %>
+  <!-- HEADER -->
+      
+      	<div class="row justify-content-md-center">
+	<div align="center"><h2 style="color: #fff;"><i class="fa fa-wrench fa-fw" aria-hidden="true"></i> Otomatik Rol Sistemi</h2></div>
+  </div>
+      
+      
+<div class="container">
+  <br>
+  <div class="jumbotron" style="background-color:#2a2d32;">
+    <div align="center">
+      <form method="POST" id="forum">
+    
+        
+        
+          
+    
+    <div class="row">
+        <div class="col-25">
+          <label for="otorol">Otomatik Rol</label>
+        </div>
+        <div class="col-75">
+          <% if (bot.ayar.has(`otoR_${guild.id}`) === false) { %>
+          <select style="text-align: left; width:87%;" name="otorol" id="otorol">
+            <option disabled selected>Lütfen bir rol seçiniz.</option>
+            <% guild.roles.filter(r => r.name !== "@everyone").forEach(r => { %>
+            <option value="<%=r.id%>" style="color:<%=r.hexColor%>"><%=r.name%></option>
+            <% }); %>
+          </select>
+          <a href="/panel/<%=guild.id%>/otorol/sifirla" class="reset-btn" role="button">Sıfırla</a>
+          <% } %>
+					<% if(bot.ayar.has(`otoR_${guild.id}`) === true) { %>
+          <select style="color:<%=guild.roles.get(bot.ayar.fetch(`otoR_${guild.id}`)).hexColor%>; text-align: left; width:87%;" name="otorol" id="otorol">
+             <option disabled selected>Lütfen bir rol seçiniz.</option>
+            <option value="<%=bot.ayar.fetch(`otoR_${guild.id}`)%>" style="color:<%=guild.roles.get(bot.ayar.fetch(`otoR_${guild.id}`)).hexColor%>" selected><%=guild.roles.get(bot.ayar.fetch(`otoR_${guild.id}`)).name%></option>
+					 <% guild.roles.filter(r => r.name !== "@everyone").filter(r => r.id !== bot.ayar.fetch(`otoR_${guild.id}`)).forEach(r => { %>
+            <option value="<%=r.id%>" style="color:<%=r.hexColor%>"><%=r.name%></option>
+          <% }); %>
+          </select>
+          <a href="/panel/<%=guild.id%>/otorol/sifirla" class="reset-btn" role="button">Sıfırla</a>
+          <% } %>
+        </div>
+      </div>
+        
+        
+        
+             <div class="row">
+        <div class="col-25">
+          <label for="otoRK">Otorol Kanalı</label>
+        </div>
+        <div class="col-75">
+          <% if (bot.ayar.has(`otoRK_${guild.id}`) === false) { %>
+          <select style="text-align: left; width:87%;" name="otoRK" id="otoRK">
+            <option disabled selected>Lütfen bir kanal seçiniz.</option>
+            <% guild.channels.filter(c => c.type === "text").forEach(c => { %>
+            <option value="<%=c.id%>">#<%=c.name%></option>
+            <% }); %>
+          </select>
+          <a href="/panel/<%=guild.id%>/otoRK/sifirla" class="reset-btn" role="button">Sıfırla</a>
+          <% } %>
+					<% if(bot.ayar.has(`otoRK_${guild.id}`) === true) { %>
+          <select style="text-align: left; width:87%;" name="otoRK" id="otoRK">
+            <option value="<%=bot.ayar.fetch(`otoRK_${guild.id}`)%>"><%=guild.channels.get(bot.ayar.fetch(`otoRK_${guild.id}`)).name%></option>
+					 <% guild.channels.filter(c => c.type === "text").filter(c => c.id !== bot.ayar.fetch(`otoRK_${guild.id}`)).forEach(c => { %>
+            <option value="<%=c.id%>">#<%=c.name%></option>
+          <% }); %>
+          </select>
+          <a href="/panel/<%=guild.id%>/otoRK/sifirla" class="reset-btn" role="button">Sıfırla</a>
+          <% } %>
+        </div>
+      </div>
+        
+        
+          <div style="width: 100%; text-align: right; margin-top: 15px;">
+      <button style="background-color:blue; color:#fff" type="sumbit" id="formbtn" class="btn btn-default" ><i class="fa fa-fw fa-save" aria-hidden="true"></i> Kaydet</button>
+      <a href="yonet" button style="background-color:orange; color:#fff" type="sumbit" id="formbtn" class="btn btn-default"><i class="fa fa-mail-reply" aria-hidden="true"></i> Geri Dön</button> </a>    </div>
+
+        
+      </form>
+    </div>  
+  </div>
+</div> 
+      
+  
+
+  
+  <script>
+      function formAutoSubmit () {
+       var frm = document.getElementById("forum")
+        frm.submit();
+      }
+    </script>
+  
+
+<%- include('footer.ejs', {bot, user, path}) %>
